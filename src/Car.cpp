@@ -9,3 +9,8 @@ Car::Car()
 Car::~Car()
 {
 }
+
+void Car::Process(const ::CarState& state)
+{
+	printf("Processing x: %f", state.x);
+}

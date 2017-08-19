@@ -161,13 +161,11 @@ vector<double> getXY(double s, double d, vector<double> maps_s, vector<double> m
 }
 
 double ref_v = 0, tar_v = 49;
-
+Car car;
 
 int main()
 {
 	uWS::Hub h;
-
-	Car car;
 
 	// Load up map values for waypoint's x,y,s and d normalized normal vectors
 	vector<double> map_waypoints_x;
@@ -232,6 +230,8 @@ int main()
 
 						state.x = jsonInput["x"];
 						state.y = jsonInput["y"];
+
+						car.Process(state);
 
 						// Main car's localization Data
 						double car_x = j[1]["x"];
