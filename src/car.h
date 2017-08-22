@@ -1,31 +1,27 @@
 #pragma once
-#include "StateModule.h"
-#include "PathModule.h"
-#include <vector>
-
-struct CarState
-{
-	double x;
-	double y;
-	double s;
-	double d;
-	double yaw;
-	double speed;
-	double endPathS;
-	double endPathD;
-
-	std::vector<double> previousPathX;
-	std::vector<double> previousPathY;
-};
+#include "path_module.h"
+#include "car_state.h"
+#include "lane_analyzer.h"
 
 class Car
 {
 public:
 	Car();
-	~Car();
-	void Process(const ::CarState& state);
-private:
-	StateModule state_module_;
-	PathModule path_module_;
-};
+	void ProcessLanes(const CarState& state, vector<DetectedCarState>& detected_cars);
+	void ProcessPath(const CarState& state);
+	void SurveyLanes();
+	void Process(const CarState& state, vector<DetectedCarState>& detected_cars);
+	void CheckLaneCompletion(const CarState& state);
 
+	PathModule path_module_;
+private:
+
+	float lane_change_min_cost_ = 0.5;
+	float lane_change_max_cost_ = 5.0;
+
+	LaneAnalyzer lane_analyzer_1_;
+	LaneAnalyzer lane_analyzer_2_;
+	LaneAnalyzer lane_analyzer_3_;
+	LaneAnalyzer* current_lane_;
+	LaneAnalyzer* target_lane_;
+};
