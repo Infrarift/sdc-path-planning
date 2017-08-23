@@ -10,7 +10,7 @@ public:
 	Car();
 	void ProcessLanes(const CarState& state, vector<DetectedCarState>& detected_cars);
 	void ProcessPath(const CarState& state);
-	void SurveyLanes();
+	void SurveyLanes(const CarState& state);
 	void Process(const CarState& state, vector<DetectedCarState>& detected_cars);
 	void CheckLaneCompletion(const CarState& state);
 
@@ -19,7 +19,8 @@ public:
 private:
 
 	float lane_change_min_cost_ = 0.5;
-	float lane_change_max_cost_ = 5.0;
+	float lane_change_max_cost_ = 8.5;
+	float lane_change_min_speed_ = 37.5;
 
 	LaneAnalyzer lane_analyzer_1_;
 	LaneAnalyzer lane_analyzer_2_;

@@ -4,9 +4,9 @@
 LaneAnalyzer::LaneAnalyzer()
 {
 	cost_forward_speed_.ApplyRange(50, 25).ApplyWeight(5);
-	cost_forward_distance_.ApplyRange(70, 20).ApplyWeight(7);
-	cost_back_distance_.ApplyRange(8, 0).ApplyWeight(25);
-	cost_back_speed_.ApplyRange(-10, 0).ApplyWeight(25);
+	cost_forward_distance_.ApplyRange(70, 20).ApplyWeight(8);
+	cost_back_distance_.ApplyRange(10, 0).ApplyWeight(50);
+	cost_back_speed_.ApplyRange(-10, 0).ApplyWeight(50);
 }
 
 void LaneAnalyzer::SetLane(int lane)
@@ -27,6 +27,9 @@ void LaneAnalyzer::Analyze(const CarState& state, vector<DetectedCarState>& dete
 	double best_forward_distance = 9999;
 	double best_back_distance = 9999;
 	max_speed_ = 50;
+	
+	// Watch out for cars on the side!
+	double side_lock_cost_ = 0;
 
 	for (auto i = 0; i < detected_cars.size(); i++)
 	{
@@ -43,11 +46,14 @@ void LaneAnalyzer::Analyze(const CarState& state, vector<DetectedCarState>& dete
 				forward_car = d_car;
 			}
 			
-			if (s_diff < back_bound_start_ && s_diff > back_bound_end_ && std::abs(s_diff) < best_back_distance)
+			if (!CarIsInLane(state) && s_diff < back_bound_start_ && s_diff > back_bound_end_ && std::abs(s_diff) < best_back_distance)
 			{
 				best_back_distance = std::abs(s_diff);
 				back_car = d_car;
 			}
+
+			if (!CarIsInLane(state) && s_diff < side_bound_start_ && s_diff > side_bound_end_)
+				side_lock_cost_ = 10.0;
 		}
 	}
 
@@ -65,13 +71,13 @@ void LaneAnalyzer::Analyze(const CarState& state, vector<DetectedCarState>& dete
 			max_speed_ = distance_to_forward < stop_distance_ ? foward_car_speed * 0.7 : foward_car_speed;
 	}
 
-	if (back_car != nullptr && !CarIsInLane(state))
+	if (back_car != nullptr)
 	{
 		distance_to_back = best_back_distance;
 		back_var_speed_difference = back_car->speed - state.speed;
 	}
 
-	cost_ = base_cost_;
+	cost_ = base_cost_ + side_lock_cost_;
 	cost_ += cost_forward_speed_.AdjustedValue(foward_car_speed);
 	cost_ += cost_forward_distance_.AdjustedValue(distance_to_forward);
 	cost_ += cost_back_distance_.AdjustedValue(distance_to_back);

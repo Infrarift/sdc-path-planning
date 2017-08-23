@@ -32,7 +32,9 @@ private:
 	double forward_bound_start_ = 120;
 	double forward_bound_end_ = 0;
 	double back_bound_start_ = 15;
-	double back_bound_end_ = -15;
+	double back_bound_end_ = -12.5;
+	double side_bound_start_ = 8;
+	double side_bound_end_ = -8;
 
 	double speed_limit_distance_ = 27;
 	double stop_distance_ = 17;

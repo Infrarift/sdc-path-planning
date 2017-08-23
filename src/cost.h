@@ -13,8 +13,8 @@ public:
 	double AdjustedValue(double val) const;
 
 private:
-	const double kMinE = -3.5;
-	const double kMaxE = 3.5;
+	const double kMinE = -3.75;
+	const double kMaxE = 3.75;
 	float e_range_ = 0;
 	double v_low_ = 0;
 	double v_high_ = 0;

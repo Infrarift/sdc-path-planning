@@ -46,7 +46,7 @@ void Car::ProcessLanes(const CarState& state, vector<DetectedCarState>& detected
 	if (target_lane_ != nullptr)
 		CheckLaneCompletion(state);
 	else
-		SurveyLanes();
+		SurveyLanes(state);
 }
 
 void Car::CheckLaneCompletion(const CarState& state)
@@ -58,7 +58,7 @@ void Car::CheckLaneCompletion(const CarState& state)
 	}
 }
 
-void Car::SurveyLanes()
+void Car::SurveyLanes(const CarState& state)
 {
 	// Find the best adjacent lane to switch to.
 	LaneAnalyzer* adjacentLane = nullptr;
@@ -70,7 +70,7 @@ void Car::SurveyLanes()
 	}
 
 	// If the cost is acceptable, change the lane.
-	if (adjacentLane->cost_ < lane_change_max_cost_ && current_lane_->cost_ - adjacentLane->cost_ >= lane_change_min_cost_)
+	if (adjacentLane->cost_ < lane_change_max_cost_ && current_lane_->cost_ - adjacentLane->cost_ >= lane_change_min_cost_ && state.speed > lane_change_min_speed_)
 		target_lane_ = adjacentLane;
 }
 void Car::ProcessPath(const CarState& state)
@@ -81,7 +81,7 @@ void Car::ProcessPath(const CarState& state)
 		path_module_.tar_lane_ = current_lane_->lane_id_ ;
 	} else
 	{
-		path_module_.tar_v_ = (current_lane_->max_speed_ + target_lane_->max_speed_)/2;
+		path_module_.tar_v_ = current_lane_->max_speed_  * 0.3 + target_lane_->max_speed_ * 0.7;
 		path_module_.tar_lane_ = target_lane_->lane_id_;
 	}
 
