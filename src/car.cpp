@@ -28,6 +28,7 @@ Car::Car()
 void Car::Process(const CarState& state, vector<DetectedCarState>& detected_cars)
 {
 	printf(" ----- Processing ----- \n");
+	safety_module_.Process(state, detected_cars);
 	ProcessLanes(state, detected_cars);
 	ProcessPath(state);
 }
@@ -50,7 +51,7 @@ void Car::ProcessLanes(const CarState& state, vector<DetectedCarState>& detected
 
 void Car::CheckLaneCompletion(const CarState& state)
 {
-	if (abs(state.d - target_lane_->lane_d_) < 0.1)
+	if (abs(state.d - target_lane_->lane_d_) < 0.5)
 	{
 		current_lane_ = target_lane_;
 		target_lane_ = nullptr;
@@ -84,8 +85,7 @@ void Car::ProcessPath(const CarState& state)
 		path_module_.tar_lane_ = target_lane_->lane_id_;
 	}
 
-	path_module_.tar_v_ = current_lane_->max_speed_;
-	path_module_.tar_lane_ = target_lane_ == nullptr ? current_lane_->lane_id_ : target_lane_->lane_id_;
+	path_module_.tar_v_ = std::min(path_module_.tar_v_, safety_module_.max_speed_);
 	path_module_.Process(state);
 }
 

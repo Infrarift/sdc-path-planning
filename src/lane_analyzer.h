@@ -31,11 +31,11 @@ private:
 
 	double forward_bound_start_ = 120;
 	double forward_bound_end_ = 0;
-	double back_bound_start_ = 10;
-	double back_bound_end_ = -20;
+	double back_bound_start_ = 15;
+	double back_bound_end_ = -15;
 
-	double speed_limit_distance_ = 25;
-	double stop_distance_ = 15;
-	double lane_detect_width_ = 3.0;
+	double speed_limit_distance_ = 27;
+	double stop_distance_ = 17;
+	double lane_detect_width_ = 2.5;
 	
 };

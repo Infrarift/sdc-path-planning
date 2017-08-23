@@ -3,10 +3,10 @@
 
 LaneAnalyzer::LaneAnalyzer()
 {
-	cost_forward_speed_.ApplyRange(50, 25).ApplyWeight(2);
-	cost_forward_distance_.ApplyRange(50, 5).ApplyWeight(3);
-	cost_back_distance_.ApplyRange(5, 0).ApplyWeight(25);
-	cost_back_speed_.ApplyRange(-5, 5).ApplyWeight(25);
+	cost_forward_speed_.ApplyRange(50, 25).ApplyWeight(5);
+	cost_forward_distance_.ApplyRange(70, 20).ApplyWeight(7);
+	cost_back_distance_.ApplyRange(8, 0).ApplyWeight(25);
+	cost_back_speed_.ApplyRange(-10, 0).ApplyWeight(25);
 }
 
 void LaneAnalyzer::SetLane(int lane)

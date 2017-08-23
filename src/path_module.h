@@ -39,7 +39,7 @@ private:
 	double spline_node_count_ = 3;
 	double waypoint_node_count_ = 35;
 	double lane_change_rate_ = 0.02;
-	double acceleration_ = 0.25;
+	double acceleration_ = 0.275;
 
 };
 

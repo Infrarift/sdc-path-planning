@@ -2,6 +2,7 @@
 #include "path_module.h"
 #include "car_state.h"
 #include "lane_analyzer.h"
+#include "safety_module.h"
 
 class Car
 {
@@ -14,6 +15,7 @@ public:
 	void CheckLaneCompletion(const CarState& state);
 
 	PathModule path_module_;
+	SafetyModule safety_module_;
 private:
 
 	float lane_change_min_cost_ = 0.5;
